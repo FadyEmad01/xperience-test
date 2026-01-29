@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "title": "Best websites for learning",
+    "description": "Discover the best websites for learning, curated for an amazing learning experience."
+  },
+  "hero": {
+    "title": "Practical training <br></br> for real careers",
+    "description": "We offer you a practical learning experience with experienced trainers, and up-to-date programming courses that prepare you for the job market.",
+    "badge": "We Have the Best Instructors"
+  },
+  "banner": {
+    "discount-desktop": "Special Pricing for Student: 20% Off!",
+    "discount-mobile": "Student Get 20% OFF"
+  },
+  "error": {
+    "eyebrow": "Something went wrong",
+    "title": "We couldn't load this page",
+    "description": "An unexpected error occurred while rendering this page. You can try again or go back using your browser navigation.",
+    "cta": "Try again"
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "Page not found",
+    "description": "The page you are looking for doesn't exist or has been moved. Use the navigation above or go back to the homepage.",
+    "cta": "Back to Xperience"
+  }
+}
