@@ -6,22 +6,24 @@ import {
 	NavigationMenuList,
 	NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { companyLinks, companyLinks2, productLinks } from "./nav-links";
+import { CompanyLinks, LearnLinks, OpportunitiesLinks } from "./nav-links";
 import { LinkItem } from "./sheard";
+import { useTranslations } from "next-intl";
 
 export function DesktopNav() {
+	const t = useTranslations("navbar");
 	return (
 		<NavigationMenu className="hidden md:flex isolate">
 			<NavigationMenuList>
 				<NavigationMenuItem>
 					<NavigationMenuTrigger className="bg-transparent focus:bg-transparent">
-						Product
+						{t("learn")}
 					</NavigationMenuTrigger>
 					<NavigationMenuContent className="bg-background p-1.5
 				
 					">
 						<div className="grid w-lg grid-cols-2 gap-2 rounded-lg border bg-popover p-2 shadow">
-							{productLinks.map((item, i) => (
+							{LearnLinks.map((item, i) => (
 								<NavigationMenuLink
 									asChild
 									className="w-full flex-row gap-x-2"
@@ -46,43 +48,48 @@ export function DesktopNav() {
 				</NavigationMenuItem>
 				<NavigationMenuItem>
 					<NavigationMenuTrigger className="bg-transparent focus:bg-transparent ">
-						Company
+						{t("opportunities")}
 					</NavigationMenuTrigger>
 					<NavigationMenuContent className="p-1.5
 					bg-background
 				">
-						<div className="grid w-lg grid-cols-2 gap-2">
-							<div className="space-y-2 rounded-lg border bg-popover p-2 shadow">
-								{companyLinks.map((item, i) => (
-									<NavigationMenuLink
-										asChild
-										className="w-full flex-row gap-x-2"
-										key={`item-${item.label}-${i}`}
-									>
-										<LinkItem {...item} />
-									</NavigationMenuLink>
-								))}
-							</div>
-							<div className="space-y-2 p-3">
-								{companyLinks2.map((item, i) => (
-									<NavigationMenuLink
-										className="flex-row items-center gap-x-2"
-										href={item.href}
-										key={`item-${item.label}-${i}`}
-									>
-										<item.icon className="size-4 text-foreground" />
-										<span className="font-medium">{item.label}</span>
-									</NavigationMenuLink>
-								))}
-							</div>
+						<div className="grid w-lg grid-cols-2 gap-2 rounded-lg border bg-popover p-2 shadow">
+
+							{OpportunitiesLinks.map((item, i) => (
+								<NavigationMenuLink
+									asChild
+									className="w-full flex-row gap-x-2"
+									key={`item-${item.label}-${i}`}
+								>
+									<LinkItem {...item} />
+								</NavigationMenuLink>
+							))}
+
 						</div>
 					</NavigationMenuContent>
 				</NavigationMenuItem>
-				<NavigationMenuLink asChild className="px-4">
-					<a className="rounded-md p-2 hover:bg-accent" href="#">
-						Pricing
-					</a>
-				</NavigationMenuLink>
+				<NavigationMenuItem>
+					<NavigationMenuTrigger className="bg-transparent focus:bg-transparent ">
+						{t("company")}
+					</NavigationMenuTrigger>
+					<NavigationMenuContent className="p-1.5
+					bg-background
+				">
+						<div className="grid w-lg grid-cols-2 gap-2 rounded-lg border bg-popover p-2 shadow">
+
+							{CompanyLinks.map((item, i) => (
+								<NavigationMenuLink
+									asChild
+									className="w-full flex-row gap-x-2"
+									key={`item-${item.label}-${i}`}
+								>
+									<LinkItem {...item} />
+								</NavigationMenuLink>
+							))}
+
+						</div>
+					</NavigationMenuContent>
+				</NavigationMenuItem>
 			</NavigationMenuList>
 		</NavigationMenu>
 	);

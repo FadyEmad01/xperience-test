@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { ElementType } from "react";
 
 export type LinkItemType = {
 	label: string;
 	href: string;
-	icon: LucideIcon;
+	icon: LucideIcon | ElementType;
 	description?: string;
 };
 
@@ -16,6 +18,7 @@ export function LinkItem({
 	href,
 	...props
 }: React.ComponentProps<"a"> & LinkItemType) {
+	const t = useTranslations();
 	return (
 		<a
 			className={cn("flex gap-x-2 rounded-md p-2 hover:bg-accent", className)}
@@ -26,10 +29,12 @@ export function LinkItem({
 				<Icon className="size-5 text-foreground" />
 			</div>
 			<div className="flex flex-col items-start justify-center">
-				<span className="font-medium">{label}</span>
-				<span className="line-clamp-2 text-muted-foreground text-xs">
-					{description}
-				</span>
+				<span className="font-medium">{t(label)}</span>
+				{description && (
+					<span className="line-clamp-2 text-muted-foreground text-xs">
+						{t(description)}
+					</span>
+				)}
 			</div>
 		</a>
 	);

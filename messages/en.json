@@ -23,5 +23,45 @@
     "title": "Page not found",
     "description": "The page you are looking for doesn't exist or has been moved. Use the navigation above or go back to the homepage.",
     "cta": "Back to Xperience"
+  },
+  "product": {
+    "courses": "Courses",
+    "coursesDesc": "Explore a variety of courses to build skills in different areas",
+    "learningPaths": "Learning Paths",
+    "learningPathsDesc": "Follow structured paths to master technologies step by step",
+    "workshops": "Workshops",
+    "workshopsDesc": "Participate in hands-on sessions and learn by doing",
+    "certifications": "Certifications",
+    "certificationsDesc": "Earn official certificates to showcase your achievements",
+    "blog": "Blog",
+    "blogDesc": "Read articles, tips, and updates from experts in the field"
+  },
+  "navbar": {
+    "learn": "Learn",
+    "opportunities": "Opportunities",
+    "company": "Company",
+    "interested": "Interested? Schedule a demo"
+  },
+  "opportunities": {
+    "jobs": "Job Opportunities",
+    "jobsDesc": "Explore open roles and career opportunities",
+    "internships": "Internships",
+    "internshipsDesc": "Gain real-world experience through internships",
+    "careerGuidance": "Career Guidance",
+    "careerGuidanceDesc": "Get expert advice to shape your career path",
+    "hiringPartners": "Hiring Partners",
+    "hiringPartnersDesc": "Companies actively hiring our graduates",
+    "scholarships": "Scholarships",
+    "scholarshipsDesc": "Financial support programs for learners"
+  },
+  "company": {
+    "about": "About Us",
+    "aboutDesc": "Learn more about our story and team",
+    "instructors": "Instructors",
+    "instructorsDesc": "Meet our experienced trainers and mentors",
+    "contact": "Contact Us",
+    "contactDesc": "Get in touch with our support team",
+    "faq": "FAQ",
+    "faqDesc": "Answers to the most common questions"
   }
 }

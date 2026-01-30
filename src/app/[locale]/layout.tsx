@@ -10,6 +10,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { siteConfig } from "@/lib/site";
 import { BannerProvider } from "@/components/context/banner-context";
+import LenisProvider from "@/components/provider/LenisProvider";
 
 const almarai = Almarai({
   subsets: ["arabic"],
@@ -102,20 +103,21 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={direction} className={inter.variable} suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${almarai.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${almarai.variable} antialiased dark`}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
           disableTransitionOnChange
         >
           <NextIntlClientProvider messages={messages} locale={locale}>
-            <BannerProvider>
-              <Banner />
-              <Header session={session} />
-              {children}
-            </BannerProvider>
+            <LenisProvider>
+              <BannerProvider>
+                <Banner />
+                <Header session={session} />
+                {children}
+              </BannerProvider>
+            </LenisProvider>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

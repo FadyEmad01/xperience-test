@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { LinkItem } from "./sheard";
-import { companyLinks, companyLinks2, productLinks } from "./nav-links";
 import { MenuIcon } from "@/components/animation/icons/MenuIcon";
 import { HeaderProps } from "@/types/header";
 import { useBanner } from "@/components/context/banner-context";
+import { CompanyLinks, LearnLinks, OpportunitiesLinks } from "./nav-links";
 
 
 export function MobileNav({ session }: HeaderProps) {
@@ -74,6 +74,7 @@ export function MobileNav({ session }: HeaderProps) {
 			{open &&
 				createPortal(
 					<div
+						data-lenis-prevent
 						className={cn(
 							"bg-background/95 backdrop-blur-xl supports-backdrop-filter:bg-background/50",
 							"fixed right-0 bottom-0 left-0 z-40 flex flex-col overflow-hidden border-t md:hidden",
@@ -89,15 +90,16 @@ export function MobileNav({ session }: HeaderProps) {
 							data-slot={open ? "open" : "closed"}
 						>
 							<div className="flex w-full flex-col gap-y-2">
-								<span className="text-sm">Product</span>
-								{productLinks.map((link) => (
-									<LinkItem key={`product-${link.label}`} {...link} />
+								<span className="text-sm">Learn</span>
+								{LearnLinks.map((link) => (
+									<LinkItem key={`Learn-${link.label}`} {...link} />
 								))}
 								<span className="text-sm">Company</span>
-								{companyLinks.map((link) => (
-									<LinkItem key={`company-${link.label}`} {...link} />
+								{OpportunitiesLinks.map((link) => (
+									<LinkItem key={`Opportunities-${link.label}`} {...link} />
 								))}
-								{companyLinks2.map((link) => (
+								<span className="text-sm">Company</span>
+								{CompanyLinks.map((link) => (
 									<LinkItem key={`company-${link.label}`} {...link} />
 								))}
 							</div>
