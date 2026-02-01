@@ -23,6 +23,7 @@ export function Header({ session }: HeaderProps) {
 	const [hasLoaded, setHasLoaded] = useState(false);
 	// Determine if we should animate based on session storage to prevent LCP hits on refresh
 	const [shouldAnimate, setShouldAnimate] = useState(false);
+	const [isMounted, setIsMounted] = useState(false);
 
 
 
@@ -35,6 +36,8 @@ export function Header({ session }: HeaderProps) {
 		: INITIAL_STYLE;
 
 	useEffect(() => {
+		setIsMounted(true);
+
 		// Check if user has already seen the animation in this session
 		const hasSeenAnimation = sessionStorage.getItem("xperience-intro-seen");
 
@@ -53,6 +56,11 @@ export function Header({ session }: HeaderProps) {
 		}
 	}, []);
 
+	// Prevent rendering things that rely on client-side state until mounted
+	// if (!isMounted) return <div className="w-screen h-dvh bg-green-800 animate-pulse" />
+	// if (!isMounted) return null
+	if (!isMounted) return <div className="w-0 h-0 bg-background" />;
+
 	return (
 		<>
 			<LazyMotion features={domAnimation}>
@@ -66,7 +74,8 @@ export function Header({ session }: HeaderProps) {
 									{/* <Logo className="h-4" /> */}
 									{(hasLoaded || !shouldAnimate) && (
 										<motion.div
-											layoutId={shouldAnimate ? "xperience-logo" : undefined}
+											// layoutId={shouldAnimate ? "xperience-logo" : undefined}
+											layoutId="xperience-logo"
 											transition={{ type: 'spring', stiffness: 150, damping: 25 }}
 											className="will-change-transform" // 5. GPU Acceleration Hint
 										>
@@ -116,7 +125,7 @@ export function Header({ session }: HeaderProps) {
 
 									className="md:hidden"
 								>
-									<MobileNav session={session}/>
+									<MobileNav session={session} />
 								</motion.div>
 								<motion.div
 									initial={INITIAL_STYLE}
@@ -139,11 +148,13 @@ export function Header({ session }: HeaderProps) {
                  - When hasLoaded becomes true, this unmounts, and the logo 
                    morphs into the header position.
              */}
-				<AnimatePresence>
+				<AnimatePresence mode="wait">
 					{(!hasLoaded && shouldAnimate) && (
 						<motion.div
+							key="intro-overlay"
 							className="fixed inset-0 z-100 flex items-center justify-center bg-background"
-							exit={{ opacity: 1 }}
+							// exit={{ opacity: 1 }}
+							exit={{ opacity: 0 }} // Fade the background out
 							transition={{ duration: 0.5 }}
 						>
 							<motion.div
