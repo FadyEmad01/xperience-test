@@ -12,6 +12,8 @@ import Link from "next/link";
 import Container from "../Container";
 import LangSwitcher from "../LangSwitcher";
 import { HeaderProps } from "@/types/header";
+import Loading from "@/app/[locale]/loading";
+import { useIntro } from "@/components/context/ui-intro-provider";
 
 export function Header({ session }: HeaderProps) {
 	const scrolled = useScroll(100);
@@ -20,46 +22,63 @@ export function Header({ session }: HeaderProps) {
 	const user = session?.user;
 
 
-	const [hasLoaded, setHasLoaded] = useState(false);
+	// const [hasLoaded, setHasLoaded] = useState(false);
 	// Determine if we should animate based on session storage to prevent LCP hits on refresh
-	const [shouldAnimate, setShouldAnimate] = useState(false);
+	// const [shouldAnimate, setShouldAnimate] = useState(false);
+
+	const { hasLoaded, shouldAnimate } = useIntro();
 	const [isMounted, setIsMounted] = useState(false);
+	const [headerAnimationStarted, setHeaderAnimationStarted] = useState(false);
 
+	// Calculate when header animations should start
+	useEffect(() => {
+		if (hasLoaded && shouldAnimate) {
+			// Start header animations after intro completes + delay
+			const timer = setTimeout(() => {
+				setHeaderAnimationStarted(true);
+			}, 300); // 300ms delay after intro completes
 
+			return () => clearTimeout(timer);
+		} else if (hasLoaded && !shouldAnimate) {
+			// If intro was skipped, start immediately
+			setHeaderAnimationStarted(true);
+		}
+	}, [hasLoaded, shouldAnimate]);
 
-	const INITIAL_STYLE = shouldAnimate
+	const INITIAL_STYLE = shouldAnimate && !headerAnimationStarted
 		? { opacity: 0 }
 		: { opacity: 1 };
 
-	const ANIMATE_STYLE = hasLoaded
+	const ANIMATE_STYLE = headerAnimationStarted || (!shouldAnimate && hasLoaded)
 		? { opacity: 1 }
 		: INITIAL_STYLE;
 
+	// useEffect(() => {
+	// 	setIsMounted(true);
+
+	// 	// Check if user has already seen the animation in this session
+	// 	const hasSeenAnimation = sessionStorage.getItem("xperience-intro-seen");
+
+	// 	if (hasSeenAnimation) {
+	// 		// If seen, load immediately without timer
+	// 		setHasLoaded(true);
+	// 		setShouldAnimate(false);
+	// 	} else {
+	// 		// If not seen, run animation and set flag
+	// 		setShouldAnimate(true);
+	// 		const timer = setTimeout(() => {
+	// 			setHasLoaded(true);
+	// 			sessionStorage.setItem("xperience-intro-seen", "true");
+	// 		}, 2200);
+	// 		return () => clearTimeout(timer);
+	// 	}
+	// }, []);
+
 	useEffect(() => {
 		setIsMounted(true);
+	},[])
 
-		// Check if user has already seen the animation in this session
-		const hasSeenAnimation = sessionStorage.getItem("xperience-intro-seen");
-
-		if (hasSeenAnimation) {
-			// If seen, load immediately without timer
-			setHasLoaded(true);
-			setShouldAnimate(false);
-		} else {
-			// If not seen, run animation and set flag
-			setShouldAnimate(true);
-			const timer = setTimeout(() => {
-				setHasLoaded(true);
-				sessionStorage.setItem("xperience-intro-seen", "true");
-			}, 2200);
-			return () => clearTimeout(timer);
-		}
-	}, []);
-
-	// Prevent rendering things that rely on client-side state until mounted
-	// if (!isMounted) return <div className="w-screen h-dvh bg-green-800 animate-pulse" />
-	// if (!isMounted) return null
-	if (!isMounted) return <div className="w-0 h-0 bg-background" />;
+	if (!isMounted) return Loading()
 
 	return (
 		<>
@@ -88,7 +107,7 @@ export function Header({ session }: HeaderProps) {
 							<motion.div
 								initial={INITIAL_STYLE}
 								animate={ANIMATE_STYLE}
-								transition={{ duration: 0.6, delay: 1 }}
+								transition={{ duration: 0.6, delay: headerAnimationStarted ? 0 : 0.1 }}
 
 							>
 								<DesktopNav />
@@ -106,7 +125,7 @@ export function Header({ session }: HeaderProps) {
 										<motion.div
 											initial={INITIAL_STYLE}
 											animate={ANIMATE_STYLE}
-											transition={{ duration: 0.6, delay: 1 }}
+											transition={{ duration: 0.6, delay: headerAnimationStarted ? 0.1 : 0.2 }}
 											className="hidden md:flex"
 										>
 											<div className="hidden items-center gap-2 md:flex">
@@ -121,7 +140,7 @@ export function Header({ session }: HeaderProps) {
 								<motion.div
 									initial={INITIAL_STYLE}
 									animate={ANIMATE_STYLE}
-									transition={{ duration: 0.6, delay: 1 }}
+									transition={{ duration: 0.6, delay: headerAnimationStarted ? 0.15 : 0.25 }}
 
 									className="md:hidden"
 								>
@@ -130,7 +149,7 @@ export function Header({ session }: HeaderProps) {
 								<motion.div
 									initial={INITIAL_STYLE}
 									animate={ANIMATE_STYLE}
-									transition={{ duration: 0.6, delay: 1 }}
+									transition={{ duration: 0.6, delay: headerAnimationStarted ? 0.2 : 0.3 }}
 
 									className=""
 								>
