@@ -46,6 +46,7 @@ export async function generateMetadata(
   const baseUrl = siteConfig.url.replace(/\/$/, "");
   const title = t("title");
   const description = t("description");
+  const ogImageUrl = new URL(`/${locale}/og-image.png`, baseUrl).toString();
 
   return {
     metadataBase: new URL(baseUrl),
@@ -101,7 +102,8 @@ export async function generateMetadata(
     openGraph: {
       title,
       description,
-      url: `${baseUrl}/${locale}`,
+      // url: `${baseUrl}/${locale}`,
+      url: ogImageUrl,
       siteName: siteConfig.name,
       images: [
         {
@@ -119,7 +121,8 @@ export async function generateMetadata(
       card: "summary_large_image",
       title,
       description,
-      images: [siteConfig.ogImage],
+      // images: [siteConfig.ogImage],
+      images: [ogImageUrl],
     },
   };
 }
