@@ -14,6 +14,7 @@ import LenisProvider from "@/components/provider/LenisProvider";
 import { IntroProvider } from "@/components/context/ui-intro-provider";
 import Footer from "@/components/layout/Footer";
 
+
 const almarai = Almarai({
   subsets: ["arabic"],
   weight: ["300", "400", "700", "800"],
@@ -53,6 +54,50 @@ export async function generateMetadata(
       template: `%s | ${siteConfig.name}`,
     },
     description,
+    icons: [
+      {
+        rel: 'icon',
+        type: 'image/ico',
+        sizes: '32x32',
+        url: '/favicon.ico',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        url: '/favicon-16x16.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        url: '/favicon-32x32.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '192x192',
+        url: '/android-chrome-192x192.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '512x512',
+        url: '/android-chrome-512x512.png',
+      },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        url: '/apple-touch-icon.png',
+      },
+    ],
+    keywords: [
+      'Learning',
+      'Figma',
+      'HTML',
+      'CSS',
+      'JavaScript',
+    ],
     openGraph: {
       title,
       description,
@@ -120,6 +165,10 @@ export default async function RootLayout({
                 <Header session={session} />
                 {children}
                 <Footer />
+                {/* <Footer />
+                <Footer2 />
+                <Footer3 />
+                <Footer4 /> */}
               </BannerProvider>
             </IntroProvider>
           </LenisProvider>
