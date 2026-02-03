@@ -46,7 +46,8 @@ export async function generateMetadata(
   const baseUrl = siteConfig.url.replace(/\/$/, "");
   const title = t("title");
   const description = t("description");
-  const ogImageUrl = new URL(`/${locale}/og-image.png`, baseUrl).toString();
+  // const ogImageUrl = new URL(`/${locale}/og-image.png`, baseUrl).toString();
+  const ogImageUrl = '/og-image.png'
 
   return {
     metadataBase: new URL(baseUrl),
