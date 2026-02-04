@@ -63,5 +63,32 @@
     "contactDesc": "Get in touch with our support team",
     "faq": "FAQ",
     "faqDesc": "Answers to the most common questions"
+  },
+  "testimonials": {
+    "header": "<gradient>Built for Learning.</gradient> <br></br> <muted>Trusted by Students.</muted>",
+    "learning": {
+      "title": "Built for real learning",
+      "content": "Learning is not about watching videos only. It's about <strong>practice</strong>, consistency, and building real-world skills step by step.",
+      "name": "Alex Johnson",
+      "role": "Frontend Developer"
+    },
+    "teamwork": {
+      "title": "Learn together",
+      "content": "Helping others is part of the journey. It's okay to say <strong>I don’t know</strong> and ask questions. Growth happens together.",
+      "name": "Sarah Williams",
+      "role": "UI Engineer"
+    },
+    "growth": {
+      "title": "Progress over perfection",
+      "content": "We believe in starting early, learning from mistakes, and improving continuously. <strong>Momentum</strong> matters more than perfection.",
+      "name": "Michael Chen",
+      "role": "Software Engineer"
+    },
+    "career": {
+      "title": "From learning to career",
+      "content": "Every project you build brings you closer to your goals. Learning here is designed to prepare you for a <strong>real career</strong>.",
+      "name": "Emily Carter",
+      "role": "Product Designer"
+    }
   }
 }
