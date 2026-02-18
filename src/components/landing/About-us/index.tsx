@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Code, Layout, GitBranch, Terminal, ChevronRight } from 'lucide-react';
+import { Code, Layout, GitBranch, Terminal } from 'lucide-react';
 import Container from '@/components/layout/Container';
 import { cn } from '@/lib/utils';
 
@@ -37,45 +37,30 @@ const features = [
     },
 ];
 
-const DURATION = 5000; // 5s
+const DURATION = 5000;
 
-// const imageVariants = {
-//     enter: (direction: number) => ({
-//         y: direction === 1 ? 80 : -80,
-//         opacity: 0,
-//         scale: 0.95,
-//     }),
-//     center: {
-//         y: 0,
-//         opacity: 1,
-//         scale: 1,
-//     },
-//     exit: (direction: number) => ({
-//         y: direction === 1 ? -80 : 80,
-//         opacity: 0,
-//         scale: 0.95,
-//     }),
-// };
-
+// Clip-path based image transition variants
 const imageVariants = {
     enter: (direction: number) => ({
         y: direction === 1 ? "100%" : "-100%",
-        clipPath: direction === 1 ? "inset(100% 0 0 0)" : "inset(0% 0 100% 0)",
+        clipPath: direction === 1 ? "inset(100% 0 0 0)" : "inset(0 0 100% 0)",
     }),
     center: {
         y: "0%",
-        clipPath: "inset(0% 0 0 0)",
+        clipPath: "inset(0 0 0 0)",
     },
     exit: (direction: number) => ({
         y: direction === 1 ? "-100%" : "100%",
-        clipPath: direction === 1 ? "inset(0% 0 100% 0)" : "inset(100% 0 0 0)",
+        clipPath: direction === 1 ? "inset(0 0 100% 0)" : "inset(100% 0 0 0)",
     }),
 };
 
 export default function AboutUs() {
     const [activeTab, setActiveTab] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
+    const [isInView, setIsInView] = useState(false);
     const [direction, setDirection] = useState<1 | -1>(1);
+    const sectionRef = useRef<HTMLElement>(null);
 
     const handleNext = useCallback(() => {
         setDirection(1);
@@ -87,14 +72,40 @@ export default function AboutUs() {
         setActiveTab(nextIndex);
     };
 
+    // Intersection Observer to detect when section is in view
     useEffect(() => {
-        if (isPaused) return;
+        const section = sectionRef.current;
+        if (!section) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsInView(entry.isIntersecting);
+            },
+            {
+                threshold: 0.3,
+                rootMargin: '-50px 0px',
+            }
+        );
+
+        observer.observe(section);
+
+        return () => {
+            observer.unobserve(section);
+        };
+    }, []);
+
+    // Auto-advance timer - only runs when in view and not paused
+    useEffect(() => {
+        if (isPaused || !isInView) return;
         const timer = setTimeout(handleNext, DURATION);
         return () => clearTimeout(timer);
-    }, [activeTab, isPaused, handleNext]);
+    }, [activeTab, isPaused, isInView, handleNext]);
+
+    // Computed state for whether animation should be running
+    const isAnimating = isInView && !isPaused;
 
     return (
-        <section className="overflow-hidden relative">
+        <section ref={sectionRef} className="overflow-hidden relative">
             <Container className='py-10'>
                 {/* Header */}
                 <div className="mb-20 space-y-4">
@@ -112,57 +123,33 @@ export default function AboutUs() {
                                 key={feature.id}
                                 feature={feature}
                                 isActive={activeTab === index}
-                                isPaused={isPaused}
+                                isAnimating={isAnimating}
                                 onClick={() => {
-                                    setActiveTab(index);
-                                    handleChange(index)
-                                    setIsPaused(true); // Stop autoplay on manual click
+                                    handleChange(index);
+                                    setIsPaused(true);
                                 }}
                                 progressDuration={DURATION}
                             />
                         ))}
+
+                        {/* Resume Button - Shows when paused */}
+                        {isPaused && (
+                            <motion.button
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 10 }}
+                                onClick={() => setIsPaused(false)}
+                                className="mt-4 px-4 py-2 text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2"
+                            >
+                                <span className="w-2 h-2 bg-white/50 rounded-full animate-pulse" />
+                                Resume autoplay
+                            </motion.button>
+                        )}
                     </div>
 
                     {/* Right: Desktop Sticky Image */}
                     <div className="hidden lg:block lg:col-span-6 sticky top-24">
-                        {/* <div className="relative aspect-[3/3] rounded-3xl overflow-hidden bg-green-900/20 backdrop-blur-3xl shadow-inner border border-white/10 ">
-                            <AnimatePresence mode="wait">
-                                <motion.img
-                                    key={activeTab}
-                                    src={features[activeTab].image}
-                                    initial={{ opacity: 0, scale: 1.1, filter: 'blur(10px)' }}
-                                    animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                                    exit={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
-                                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                    className="absolute inset-2  object-cover"
-                                />
-                            </AnimatePresence>
-                        </div> */}
-                        {/* <div className="relative aspect-[3/3] rounded-3xl overflow-hidden shadow-2xl bg-cover bg-center"
-                            style={{
-                                backgroundImage: `url(/images/tahoe-light.jpg)`,
-                            }}
-                        >
-                            <AnimatePresence mode="wait" custom={direction}>
-                                <div className='absolute inset-0 flex items-center justify-center'>
-                                    <motion.img
-                                        key={activeTab}
-                                        src={features[activeTab].image}
-                                        custom={direction}
-                                        variants={imageVariants}
-                                        initial="enter"
-                                        animate="center"
-                                        exit="exit"
-                                        transition={{
-                                            duration: 0.6,
-                                            ease: [0.22, 1, 0.36, 1],
-                                        }}
-                                        className="w-full h-full max-w-[90%] max-h-[90%] rounded-lg object-cover"
-                                    />
-                                </div>
-                            </AnimatePresence>
-                        </div> */}
-                        <ImageSwitcher direction={direction} activeIndex={activeTab}/>
+                        <ImageSwitcher direction={direction} activeIndex={activeTab} />
                     </div>
                 </div>
             </Container>
@@ -170,7 +157,24 @@ export default function AboutUs() {
     );
 }
 
-function AccordionItem({ feature, isActive, onClick, progressDuration, isPaused }: any) {
+interface AccordionItemProps {
+    feature: typeof features[0];
+    isActive: boolean;
+    isAnimating: boolean;
+    onClick: () => void;
+    progressDuration: number;
+}
+
+function AccordionItem({ feature, isActive, onClick, progressDuration, isAnimating }: AccordionItemProps) {
+    const [progressKey, setProgressKey] = useState(0);
+
+    // Reset progress animation when item becomes active and is animating
+    useEffect(() => {
+        if (isActive && isAnimating) {
+            setProgressKey((prev) => prev + 1);
+        }
+    }, [isActive, isAnimating]);
+
     return (
         <div
             onClick={onClick}
@@ -209,33 +213,63 @@ function AccordionItem({ feature, isActive, onClick, progressDuration, isPaused 
                             </p>
 
                             {/* Mobile Image (Visible only inside accordion) */}
-                            <div className="lg:hidden rounded-2xl overflow-hidden aspect-video border border-white/10">
+                            <div className="lg:hidden rounded-xl overflow-hidden aspect-video border border-white/10 mt-6">
                                 <img src={feature.image} alt="" className="w-full h-full object-cover" />
                             </div>
 
-                            {isActive && !isPaused && (
-                                <div className="h-1 w-full bg-neutral-800 rounded-full overflow-hidden mt-6">
+                            {/* Progress Bar - Only shows when animating (not paused and in view) */}
+                            <AnimatePresence mode="wait">
+                                {/* {isAnimating ? (
                                     <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: "100%" }}
-                                        transition={{
-                                            duration: progressDuration / 1000,
-                                            ease: "linear",
-                                        }}
-                                        className="h-full bg-white"
-                                    />
-                                </div>
-                            )}
-
-                            {/* Progress Bar */}
-                            {/* <div className="h-1 w-full bg-neutral-800 rounded-full overflow-hidden">
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: "100%" }}
-                                    transition={{ duration: progressDuration / 1000, ease: "linear" }}
-                                    className="h-full bg-white"
-                                />
-                            </div> */}
+                                        key="progress-active"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="h-1 w-full bg-neutral-800 rounded-full overflow-hidden mt-6"
+                                    >
+                                        <motion.div
+                                            key={progressKey}
+                                            initial={{ width: "0%" }}
+                                            animate={{ width: "100%" }}
+                                            transition={{
+                                                duration: progressDuration / 1000,
+                                                ease: "linear",
+                                            }}
+                                            className="h-full bg-white"
+                                        />
+                                    </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key="progress-paused"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="h-1 w-full bg-neutral-800 rounded-full overflow-hidden mt-6"
+                                    >
+                                        <div className="h-full bg-white/30 w-full" />
+                                    </motion.div>
+                                )} */}
+                                {isAnimating && (
+                                    <motion.div
+                                        key="progress-active"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="h-1 w-full bg-neutral-800 rounded-full overflow-hidden mt-6"
+                                    >
+                                        <motion.div
+                                            key={progressKey}
+                                            initial={{ width: "0%" }}
+                                            animate={{ width: "100%" }}
+                                            transition={{
+                                                duration: progressDuration / 1000,
+                                                ease: "linear",
+                                            }}
+                                            className="h-full bg-white"
+                                        />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     </motion.div>
                 )}
@@ -244,10 +278,43 @@ function AccordionItem({ feature, isActive, onClick, progressDuration, isPaused 
     );
 }
 
+// const ImageSwitcher = ({ activeIndex, direction }: { activeIndex: number; direction: 1 | -1 }) => {
+//     return (
+//         <div 
+//             className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl bg-cover bg-center"
+//             style={{
+//                 backgroundImage: `url(/images/tahoe-light.jpg)`,
+//             }}
+//         >
+//             {/* Inner container for the animated image */}
+//             <div className="absolute inset-0 flex items-center justify-center p-6">
+//                 <div className="relative w-full h-full rounded-lg overflow-hidden">
+//                     <AnimatePresence mode="popLayout" custom={direction} initial={false}>
+//                         <motion.img
+//                             key={activeIndex}
+//                             src={features[activeIndex].image}
+//                             alt={features[activeIndex].title}
+//                             custom={direction}
+//                             variants={imageVariants}
+//                             initial="enter"
+//                             animate="center"
+//                             exit="exit"
+//                             transition={{
+//                                 duration: 0.6,
+//                                 ease: [0.22, 1, 0.36, 1],
+//                             }}
+//                             className="absolute inset-0 w-full h-full object-cover"
+//                         />
+//                     </AnimatePresence>
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// };
 
 const ImageSwitcher = ({ activeIndex, direction }: { activeIndex: number; direction: 1 | -1 }) => {
     return (
-        <div className="relative aspect-[3/3] rounded-3xl overflow-hidden shadow-2xl bg-cover bg-center"
+        <div className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl bg-cover bg-center"
             style={{
                 backgroundImage: `url(/images/tahoe-light.jpg)`,
             }}
@@ -265,10 +332,9 @@ const ImageSwitcher = ({ activeIndex, direction }: { activeIndex: number; direct
                         initial={{ scale: 1.1, filter: 'blur(10px)' }}
                         animate={{ scale: 1, filter: 'blur(0px)' }}
                         exit={{ scale: 0.95, filter: 'blur(10px)' }}
-                        transition={{ duration: 0.3, 
-                            // ease: [0.6, 0.01, 0.05, 1] 
-                            // ease: "easeInOut"
-                            ease: [0.22, 1, 0.36, 1] 
+                        transition={{
+                            duration: 0.3,
+                            ease: [0.22, 1, 0.36, 1]
                         }}
                         className="w-full h-full max-w-[90%] max-h-[90%] rounded-lg object-cover"
                     />

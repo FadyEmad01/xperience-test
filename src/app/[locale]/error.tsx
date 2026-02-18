@@ -17,7 +17,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
+    <main className="flex min-h-[85vh] flex-col items-center justify-center px-4 text-center">
       <p className="mb-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">
         {t("eyebrow")}
       </p>

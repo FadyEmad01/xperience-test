@@ -123,7 +123,7 @@ import { LinkItemType } from "./sheard";
 export const LearnLinks: LinkItemType[] = [
   {
     label: "product.courses",
-    href: "#",
+    href: "/courses",
     description: "product.coursesDesc",
     icon: GraduationCap,
   },

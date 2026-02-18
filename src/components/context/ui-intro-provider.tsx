@@ -10,11 +10,20 @@ type IntroContextType = {
 
 const IntroContext = createContext<IntroContextType | null>(null);
 
+// // Animation timing constants
+// export const INTRO_DURATION = 2200; // Intro animation duration in ms
+// export const HEADER_DELAY = 300; // Delay before header animations start (after intro)
+// export const HEADER_DURATION = 600; // Header animation duration
+// export const HERO_DELAY = 200; // Delay before hero animations start (after header)
+
+
 // Animation timing constants
-export const INTRO_DURATION = 2200; // Intro animation duration in ms
-export const HEADER_DELAY = 300; // Delay before header animations start (after intro)
-export const HEADER_DURATION = 600; // Header animation duration
-export const HERO_DELAY = 200; // Delay before hero animations start (after header)
+export const INTRO_DURATION = 2200;
+export const HEADER_DELAY = 300;
+export const HEADER_DURATION = 600;
+export const HERO_DELAY = 200;
+export const HERO_CONTENT_DURATION = 800; // NEW: Time for hero text content to animate
+export const HERO_VISUAL_DELAY = HEADER_DELAY + HEADER_DURATION + HERO_DELAY + HERO_CONTENT_DURATION; // NEW: Total delay for visual
 
 export function IntroProvider({ children }: { children: React.ReactNode }) {
   const [hasLoaded, setHasLoaded] = useState(false);

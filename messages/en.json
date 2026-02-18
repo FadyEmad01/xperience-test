@@ -90,5 +90,9 @@
       "name": "Emily Carter",
       "role": "Product Designer"
     }
+  },
+    "heroCourses": {
+    "title": "Our training <br></br> course",
+    "description": "We offer you a practical learning experience with experienced trainers, and up-to-date programming courses that prepare you for the job market."
   }
 }

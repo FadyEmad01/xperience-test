@@ -384,13 +384,14 @@ const Card = ({ config }: { config: TestimonialConfig }) => {
                 </h3>
 
                 {/* Dynamic Body Text with Rich Formatting (<strong> handling) */}
-                <p className="text-lg leading-relaxed text-neutral-400">
+                {/* <p className="text-lg mb-4 leading-relaxed text-neutral-400">
                     {t.rich(`${config.id}.content`, {
                         strong: (chunks) => (
                             <span className="text-white font-medium">{chunks}</span>
                         ),
                     })}
-                </p>
+                </p> */}
+                <img className="w-full lg:rounded-2xl rounded-xl" src="/images/t1.png" alt="" />
             </div>
         </motion.div>
     );
@@ -431,7 +432,7 @@ export default function TestimonialsSection() {
                 </div>
 
                 {/* Cards Container */}
-                <div className="relative max-w-4xl mx-auto flex flex-col items-center">
+                <div className="relative max-w-4xl mx-auto flex flex-col items-center overflow-hidden">
                     {TESTIMONIAL_CONFIG.map((item) => (
                         <Card key={item.id} config={item} />
                     ))}

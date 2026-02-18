@@ -77,7 +77,7 @@ export function MobileNav({ session }: HeaderProps) {
 						data-lenis-prevent
 						className={cn(
 							"bg-background/95 backdrop-blur-xl supports-backdrop-filter:bg-background/50",
-							"fixed right-0 bottom-0 left-0 z-40 flex flex-col overflow-hidden border-t md:hidden",
+							"fixed right-0 bottom-0 left-0 z-[99999] flex flex-col overflow-hidden border-t md:hidden",
 							isVisible ? "top-32" : "top-18"
 						)}
 						id="mobile-menu"

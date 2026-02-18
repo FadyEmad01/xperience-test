@@ -13,6 +13,7 @@ import { BannerProvider } from "@/components/context/banner-context";
 import LenisProvider from "@/components/provider/LenisProvider";
 import { IntroProvider } from "@/components/context/ui-intro-provider";
 import Footer from "@/components/layout/Footer";
+import { GradualBlur } from "@/components/layout/GradualBlur";
 
 
 const almarai = Almarai({
@@ -168,6 +169,16 @@ export default async function RootLayout({
                 <Banner />
                 <Header session={session} />
                 {children}
+                <GradualBlur
+                  preset="intense"
+                  target="page"
+                  position="bottom"
+                  // height="6rem"
+                  height="3rem"
+                  strength={2}
+                  divCount={5}
+                  opacity={1}
+                />
                 <Footer />
                 {/* <Footer />
                 <Footer2 />

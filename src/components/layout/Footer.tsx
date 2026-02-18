@@ -86,7 +86,7 @@ export default function Footer() {
     ];
     return (
         <>
-            <footer className="relative bg-background">
+            <footer className="relative bg-background overflow-hidden">
                 <Container className="relative">
                     <div className="flex flex-col border-t gap-12 h-fit py-10">
                         {/* <div className="flex justify-between items-start text-left gap-8 flex-wrap ">
