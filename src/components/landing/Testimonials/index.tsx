@@ -404,7 +404,7 @@ export default function TestimonialsSection() {
     return (
         <section className="relative w-full bg-black py-32 overflow-hidden">
             <Container>
-                <div className="relative z-10 mb-20 text-center max-w-2xl mx-auto">
+                <div className="relative z-10  text-center max-w-2xl mx-auto">
                     {/* Using text-balance for nicer wrapping */}
                     <h2 className="text-4xl md:text-6xl ltr:leading-[1.1] ltr:sm:leading-[1.05] leading-tight tracking-[-0.005em] md:tracking-[-0.01em] mb-3 text-balance">
                         {/* <span className="effect-font-hero effect-font-gradient effect-font-styling">

@@ -1174,21 +1174,25 @@ function HeroVisual() {
                             animate={{ opacity: isIframeLoaded ? 1 : 0 }}
                             transition={{ duration: 0.5, ease: EASE.out }}
                             className="absolute inset-0"
+                            data-lenis-prevent
+                            style={{
+                                overscrollBehavior: "contain"
+                            }}
                         >
-                            <iframe
-                                // key={key}
-                                src="https://www.youtube.com/embed/Fvl1WWec5nY"
-                                className="absolute inset-0 w-full h-full border-0 rounded-2xl"
-                                loading="lazy"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                onLoad={handleIframeLoad}
-                            />
-                        </motion.div>
-                    </div>
+                        <iframe
+                            // key={key}
+                            src="https://www.youtube.com/embed/Fvl1WWec5nY"
+                            className="absolute inset-0 w-full h-full border-0 rounded-2xl"
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            onLoad={handleIframeLoad}
+                        />
+                    </motion.div>
                 </div>
-            </motion.div>
         </div>
+            </motion.div >
+        </div >
     );
 }
 
