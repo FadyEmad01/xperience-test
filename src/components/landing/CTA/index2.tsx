@@ -1143,8 +1143,8 @@ function Orbit({
               key={`${orbitIndex}-${i}`}
               className={`absolute flex items-center justify-center rounded-full will-change-transform
                 ${isEmpty ? "" : "bg-amber-50/[0.06] backdrop-blur-sm border border-amber-50/[0.1]"}
-                ${item.type === "artist" ? "ring-2 ring-amber-50/20" : ""}
-                ${item.type === "stat" ? "bg-amber-50/[0.1]" : ""}
+                ${item.type === "front-end" ? "ring-2 ring-amber-50/20" : ""}
+                ${item.type === "front-end" ? "bg-amber-50/[0.1]" : ""}
                 ${!isEmpty ? "transition-transform duration-200 hover:scale-110 grayscale hover:grayscale-0" : ""}
               `}
               style={{
